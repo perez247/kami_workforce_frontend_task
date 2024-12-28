@@ -1,7 +1,7 @@
 
 
 
-  <div class="wrapper vh-100" (click)="onOutsideClick()">
+  <div class="wrapper vh-100" tabindex="-1" (click)="onOutsideClick()" (keyup.enter)="onOutsideClick()" (keyup.space)="onOutsideClick()">
     <div class="d-flex position-relative">
       <!-- Sidebar -->
       <app-sidebar [ngClass]="{'d-none': !sidebarService.isOpen() && isDesktop()}"></app-sidebar>

@@ -9,7 +9,7 @@ import { BaseService } from '../base/base.service';
 })
 export class PhotoService extends BaseService<PhotoModel> {
 
-    protected override endpoint: string = 'photos';
+    protected override endpoint = 'photos';
     
     constructor(http: HttpClient) {
       super(http);

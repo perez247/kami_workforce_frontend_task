@@ -1,13 +1,13 @@
 export class UserModel {
-    id: number = 1;
-    firstName: string = '';
-    lastName: string = '';
-    userName: string = '';
-    email: string = '';
-    phone: string = '';
-    website: string = '';
-    company: string = '';
-    imageUrl: string = '';
+    id = 1;
+    firstName = '';
+    lastName = '';
+    userName = '';
+    email = '';
+    phone = '';
+    website = '';
+    company = '';
+    imageUrl = '';
 
     constructor(data: Partial<UserModel>) {
         Object.assign(this, data);

@@ -62,7 +62,7 @@ export abstract class BaseService<T> {
     );
   }
 
-  private applyPagination(data: T[], pagination: Pagination): ApplicationResponse<T[]> {
+  private applyPagination(data: T[], pagination?: Pagination): ApplicationResponse<T[]> {
     pagination = this.sanitize(pagination);
     const start = (pagination.pageNumber - 1) * pagination.pageSize;
     const end = start + pagination.pageSize;
@@ -71,7 +71,7 @@ export abstract class BaseService<T> {
 
   }
 
-  private sanitize(pagination: Pagination): Pagination {
+  private sanitize(pagination?: Pagination): Pagination {
     if (!pagination) {
         pagination = {
             pageSize: 10,
@@ -80,19 +80,19 @@ export abstract class BaseService<T> {
     }
     try {
         // Ensure pageSize is a valid number and greater than 0
-        if (!this.isValidNumber(pagination.pageSize) || pagination.pageSize < 1 || pagination.pageSize > 50) {
+        if (!this.isValidNumber(pagination.pageSize.toString()) || pagination.pageSize < 1 || pagination.pageSize > 50) {
             pagination.pageSize = 10;
         }
-    } catch (error) {
+    } catch {
         pagination.pageSize = 10;
     }
 
     try {
         // Ensure pageNumber is a valid number and greater than 0
-        if (!this.isValidNumber(pagination.pageNumber) || pagination.pageNumber < 1) {
+        if (!this.isValidNumber(pagination.pageNumber.toString()) || pagination.pageNumber < 1) {
             pagination.pageNumber = 1;
         }
-    } catch (error) {
+    } catch {
         pagination.pageNumber = 1;
     }
 
@@ -102,9 +102,9 @@ export abstract class BaseService<T> {
     return pagination;
   }
 
-  private isValidNumber(value: any): boolean {
+  private isValidNumber(inputValue: string): boolean {
     // Check if value is a number and is finite
-    value = Number(value);
-    return value && typeof value === 'number' && Number.isFinite(value) && Number.isInteger(value);
+    const value = Number(inputValue);
+    return typeof value === 'number' && Number.isFinite(value) && Number.isInteger(value);
   }
 }

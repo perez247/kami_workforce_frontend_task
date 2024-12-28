@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PostModel } from '../../models/post.model';
 import { BaseService } from '../base/base.service';
 import { map, Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { map, Observable } from 'rxjs';
 })
 export class PostService extends BaseService<PostModel> {
 
-  protected override endpoint: string = 'posts';
+  protected override endpoint = 'posts';
 
   constructor(http: HttpClient) {
     super(http);
@@ -37,10 +37,11 @@ export class PostService extends BaseService<PostModel> {
     );
   }
 
+  // UserId is currently not being used but will be required for real data
   userPosts(userId: number): Observable<PostModel[]> {
     return this.getCachedData().pipe(
       map(data => {
-        const length = 10;
+        const length = (userId * 10)/userId;
         return data.slice(0, length);
       })
     );

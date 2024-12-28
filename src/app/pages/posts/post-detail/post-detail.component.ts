@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PostItemComponent } from '../../../shared/components/post-item/post-item.component';
 import { PostPlaceholderComponent } from '../../../shared/components/post-placeholder/post-placeholder.component';
 import { PostViewModel } from '../../../core/view-models/post-view.model';
@@ -14,7 +14,7 @@ import { GoBackComponent } from '../../../shared/components/go-back/go-back.comp
   templateUrl: './post-detail.component.html',
   styleUrl: './post-detail.component.scss'
 })
-export class PostDetailComponent {
+export class PostDetailComponent implements OnInit {
   vm = inject(PostViewModel);
   router = inject(Router)
   routes = ngxRoutes

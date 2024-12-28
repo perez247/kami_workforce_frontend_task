@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { InputTypesEnum } from '../../../core/enums/InputTypesEnum';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QueryParams } from '../../../core/constants/QueryParams';

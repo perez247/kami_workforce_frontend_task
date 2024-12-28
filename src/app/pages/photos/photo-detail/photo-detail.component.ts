@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { PostViewModel } from '../../../core/view-models/post-view.model';
 import { ngxRoutes } from '../../../app.routes';
 import { Router } from '@angular/router';
 import { PhotoItemComponent } from "../../../shared/components/photo-item/photo-item.component";

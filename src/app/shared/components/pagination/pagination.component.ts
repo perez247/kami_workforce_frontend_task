@@ -1,6 +1,5 @@
-import { Component, computed, EventEmitter, input, Input, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, input, Output } from '@angular/core';
 import { Pagination } from '../../../core/models/pagination.model';
-import { ApplicationResponse } from '../../../core/models/response.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { QueryParams } from '../../../core/constants/QueryParams';
 
@@ -31,7 +30,7 @@ export class PaginationComponent {
       const maxVisible = 5;
       
       let start = Math.max(2, current - Math.floor(maxVisible / 2));
-      let end = Math.min(total - 1, start + maxVisible - 1);
+      const end = Math.min(total - 1, start + maxVisible - 1);
       
       if (end - start < maxVisible - 1) {
           start = Math.max(2, end - maxVisible + 1);

@@ -8,7 +8,7 @@ export class TrimSentencePipe implements PipeTransform {
   transform(value: string, ...args: number[]): string {
     if (!value) { return ''; }
 
-    var length = args[0] ?? 20;
+    const length = args[0] ?? 20;
 
     if (value.length <= length) { return value; }
 

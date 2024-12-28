@@ -8,7 +8,7 @@ import { PhotoService } from "../services/photo/photo.service";
 @Injectable()
 export class PhotoViewModel extends BaseViewModel<PhotoModel> {
     protected override service: BaseService<PhotoModel> = inject(PhotoService);
-    pageName: string = 'Photo List Page';
+    pageName = 'Photo List Page';
     sort: LookupModel<string>[] = [
         { label: 'Id', value: 'id' }, 
         { label: 'Title', value: 'title' },

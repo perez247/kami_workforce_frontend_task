@@ -9,12 +9,12 @@ import { BaseService } from "../services/base/base.service";
 import { LookupModel } from "../models/lookup.model";
 
 @Injectable()
-export class UserViewModel extends BaseViewModel<UserModel> {
+export class UserViewModel extends BaseViewModel<UserModel> implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   
   protected override service: BaseService<UserModel> = inject(UserService);
-  pageName: string = 'Album List Page';
+  pageName = 'Album List Page';
   sort: LookupModel<string>[] = [
     { label: 'Id', value: 'id' }, 
     { label: 'First Name', value: 'firstName' },

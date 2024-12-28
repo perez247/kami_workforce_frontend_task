@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { PhotoModel } from '../../../core/models/photo.model';
-import { CommonModule, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ngxRoutes } from '../../../app.routes';
 
@@ -15,6 +15,6 @@ export class PhotoItemComponent {
   photo = input.required<PhotoModel>();
   isDetail = input<boolean>(false);
 
-  isLoading: boolean = true;
+  isLoading = true;
   routes = ngxRoutes;
 }

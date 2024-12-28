@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, inject, input, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
 import { ngxRoutes } from '../../../app.routes';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -17,8 +17,8 @@ export class SidebarComponent {
 
   sidebarService = inject(SidebarService);
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  @HostListener('window:resize')
+  onResize() {
     if (window.innerWidth <= 992) {
       this.sidebarService.close();
     }

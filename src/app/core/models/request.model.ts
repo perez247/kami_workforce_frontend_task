@@ -1,7 +1,7 @@
 import { Pagination } from "./pagination.model";
 
 export class ApplicationRequest<T> {
-    filterTerm: string = '';
+    filterTerm = '';
     sortBy?: keyof T;
     pagination: Pagination = { pageNumber: 1, pageSize: 10 };
 

@@ -7,7 +7,7 @@ import { BaseService } from '../base/base.service';
   providedIn: 'root'
 })
 export class AlbumService extends BaseService<AlbumModel> {
-    protected override endpoint: string = 'albums';
+    protected override endpoint = 'albums';
     
     constructor(http: HttpClient) {
       super(http);

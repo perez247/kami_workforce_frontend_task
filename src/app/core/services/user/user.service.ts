@@ -8,19 +8,27 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService extends BaseService<UserModel> {
-  protected override endpoint: string = 'posts';
+  protected override endpoint = 'posts';
 
   constructor(http: HttpClient) {
     super(http);
   }
 
   protected override applySearchFilter(data: UserModel[], filterTerm: string): UserModel[] {
-    return data;
+    if (filterTerm.trim().length == 0) {
+      return data;
+    }
+
+    return data.filter(x => 
+      x.firstName.toLowerCase().includes(filterTerm.toLowerCase()) || 
+      x.lastName.toLowerCase().includes(filterTerm.toLowerCase()) || 
+      x.id.toString() === filterTerm
+    );
   }
 
   override getById(userId: number): Observable<UserModel> {
     return of<UserModel>({
-      id: 1,
+      id: userId,
       firstName: 'John',
       lastName: 'Doe',
       userName: '@johndoe',
