@@ -13,4 +13,8 @@ export class SidebarService {
   close() {
     this.isOpen.set(false);
   }
+
+  isDesktop(): boolean {
+    return window.innerWidth > 992;
+  }
 }

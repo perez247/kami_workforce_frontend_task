@@ -14,13 +14,9 @@ export class AppComponent implements OnInit {
   sidebarService = inject(SidebarService);
 
   ngOnInit(): void {
-    if (this.isDesktop()) {
+    if (this.sidebarService.isDesktop()) {
       this.sidebarService.isOpen.set(true);
     }
-  }
-
-  isDesktop(): boolean {
-    return window.innerWidth > 992;
   }
 
   toggleSidebar(event: MouseEvent) {

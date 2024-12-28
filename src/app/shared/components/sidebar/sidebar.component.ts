@@ -23,4 +23,10 @@ export class SidebarComponent {
       this.sidebarService.close();
     }
   }
+
+  closeSideBar(): void {
+    if (!this.sidebarService.isDesktop()) {
+      this.sidebarService.close()
+    }
+  }
 }
