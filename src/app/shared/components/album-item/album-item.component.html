@@ -1,0 +1,15 @@
+
+<div class="card custom-border-hover shadow">
+<a [routerLink]="['/' + routes.singleAlbum.fn({ id: album().id.toString() })]" class="text-decoration-none text-dark" >
+    <div class="card-header bg-primary">
+        <strong>Album Cover: </strong>{{ album().id }}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title fs-2">{{ album().title | trimSentence : (isDetail() ? 1000 : 30)}}</h5>
+    </div>
+</a>
+    <a [routerLink]="['/' + routes.singleUser.fn({ id: album().userId.toString() })]" class="card-footer">
+        <strong>By: </strong>
+        <a class="card-link">John Doe</a>
+    </a>
+</div>

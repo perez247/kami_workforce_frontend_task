@@ -1,0 +1,19 @@
+
+<div class="d-flex w-100 shadow p-4 rounded-3 bg-white mb-3 justify-content-between">
+    <h5 class="fs-3">User Profile</h5>
+    <app-go-back />
+</div>
+
+<section class="container d-flex gap-3 flex-column">
+    <div>
+        <app-user-display [user]="vm.user()" [isLoading]="vm.isLoading()" />
+    </div>
+
+    <div>
+        <app-user-personal-information [user]="vm.user()" [isLoading]="vm.isLoading()" />
+    </div>
+
+    <div>
+        <app-user-posts [posts]="vm.userPosts()" [isLoading]="vm.isLoading()" />
+    </div>
+</section>

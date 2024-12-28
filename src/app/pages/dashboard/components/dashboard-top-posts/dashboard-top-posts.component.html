@@ -1,0 +1,25 @@
+
+<section class="container-fluid shadow p-4 rounded-3 bg-white">
+    <div class="row">
+        @if (!isLoading()) {
+            <div class="col-12 mb-4 d-flex gap-1">
+                <span class="fw-bold">Top Posts </span>
+                <span class="fw-light">({{ topPosts().length }})</span>
+            </div>
+            @for (item of topPosts(); track item.id) {
+                <div class="col-12 mb-4">
+                    <app-post-item [post]="item" />
+                </div>
+            }
+        } @else {
+            <div class="col-12 mb-4 placeholder-glow">
+                <span class="placeholder col-sm-3 col-md-2"></span>
+            </div>
+            @for (item of [].constructor(10); track $index) {
+                <div class="col-12 mb-4">
+                     <app-post-placeholder />
+                </div>
+            }
+        }
+    </div>
+</section>

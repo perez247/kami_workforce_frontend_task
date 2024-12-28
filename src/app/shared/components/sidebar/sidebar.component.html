@@ -1,0 +1,83 @@
+<div 
+[class.active]="sidebarService.isOpen()" 
+(click)="$event.stopPropagation()"
+id="sidebar" class="d-flex flex-column p-3 bg-light vh-100 shadow bg-white" style="width: 280px;">
+    <div>
+        <a href="/" class="d-flex align-items-center gap-2 link-dark text-decoration-none">
+            <i class="bi bi-signal" style="font-size: 2rem;"></i>
+            <div>
+                <span class="fs-4 d-block lh-1">Social Grid</span>
+                <span class="fw-light lh-1">Workspace</span>
+            </div>
+        </a>
+    </div>
+    <hr>
+
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li>
+        <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="['/' + routes.dashboard.fn()]" routerLinkActive="active"  class="nav-link d-flex align-items-center gap-2">
+            <i class="bi bi-pie-chart"></i>  
+            <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/' + routes.posts.fn()]" routerLinkActive="active"  class="nav-link d-flex align-items-center gap-2">
+            <i class="bi bi-postcard"></i>          
+            <span>Posts</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/' + routes.albums.fn()]" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <i class="bi bi-journal-album"></i> 
+            <span>Albums</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/' + routes.photos.fn()]" routerLinkActive="active" class="nav-link d-flex align-items-center gap-2">
+            <i class="bi bi-images"></i>
+            <span>Photos</span>
+        </a>
+      </li>
+    </ul>
+
+    <div>
+        <hr>
+        <a [routerLink]="['/' + routes.singleUser.fn({ id: '123' })]" class="nav-link text-decoration-none gap-2">
+          <div class="card p-2">
+            <div class=" d-flex align-items-center gap-2 justify-content-center">
+              <img src="/assets/images/profile.jpg" alt="Avatar" class="avatar-sm">
+              <div>
+                <h6 class="mb-1">John Doe</h6>
+                <p class="text-muted mb-0">Software Engineer</p>
+              </div>
+            </div>
+          </div>
+        </a>
+    </div>
+  </div>
+
+  <!-- <nav 
+  id="sidebar" 
+  [class.active]="sidebarService.isOpen()" 
+  class="bg-dark text-white"
+  (click)="$event.stopPropagation()"
+>
+  <div class="sidebar-header p-3">
+    <h3>Sidebar Header</h3>
+  </div>
+
+  <ul class="list-unstyled p-3">
+    <li class="mb-3">
+      <a href="#" class="text-white text-decoration-none">Home</a>
+    </li>
+    <li class="mb-3">
+      <a href="#" class="text-white text-decoration-none">About</a>
+    </li>
+    <li class="mb-3">
+      <a href="#" class="text-white text-decoration-none">Portfolio</a>
+    </li>
+    <li class="mb-3">
+      <a href="#" class="text-white text-decoration-none">Contact</a>
+    </li>
+  </ul>
+</nav> -->

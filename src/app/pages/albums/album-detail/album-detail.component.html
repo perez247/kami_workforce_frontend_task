@@ -1,0 +1,17 @@
+
+<section class="container d-flex flex-column gap-4 ">
+    <div class="d-flex w-100 shadow p-4 rounded-3 bg-white">
+        <h5 class="fs-3">Photo Detail</h5>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 col-md-6">
+          @if (!vm.isLoading() && vm.singleResponse()) {
+              <app-album-item [album]="vm.singleResponse()!" [isDetail]="true" />
+          } @else {
+              <app-album-placeholder />
+          }
+        </div>
+      </div>
+      <app-go-back />
+</section>
+

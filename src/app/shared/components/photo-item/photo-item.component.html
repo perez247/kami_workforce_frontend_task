@@ -1,0 +1,27 @@
+<div 
+  [routerLink]="['/' + routes.singlePhoto.fn({ id: photo().id.toString() })]" 
+  routerLinkActive="router-link-active" 
+   class="card position-relative custom-border-hover" 
+   [class.placeholder-glow]="isLoading"
+   >
+    @if (isLoading) {
+      <div class="square-div placeholder"></div>
+    }
+    <img 
+    [src]="photo().thumbnailUrl" 
+    class="card-img-top"
+    alt="Image 1"
+    (load)="isLoading = false"
+    (error)="isLoading = true"
+    [ngClass]="{'position-absolute -z-10': isLoading}"
+    >
+    <div class="card-body">
+      <p 
+        [class.text-truncate]="!isDetail()"
+        class="card-text">{{ photo().title }}</p>
+    </div>
+
+    <div class="bg-white shadow d-flex justify-context-center px-3 py-2 rounded-2" style="position: absolute; top: 5px; left: 5px;">
+      {{ photo().id }}
+    </div>
+  </div>

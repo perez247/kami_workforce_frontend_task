@@ -1,0 +1,65 @@
+// styles.scss
+
+// 1. Override Bootstrap's variables
+$primary: #c08bf6;    // customize your primary color
+$secondary: #f5f2f8;  // customize your secondary color
+$success: #28a745;    // customize your success color
+$info: #e3e0f3;       // customize your info color
+$warning: #ffc107;    // customize your warning color
+$danger: #dc3545;     // customize your danger color
+$light: #f8f9fa;      // customize your light color
+$dark: #343a40;       // customize your dark color
+
+// 2. Custom component-specific variables
+$nav-pills-link-active-bg: $primary;
+$badge-padding-y: .35em;
+$badge-padding-x: .65em;
+$badge-font-size: 75%;
+$badge-font-weight: 700;
+
+// Component-specific colors
+$nav-pills-link-color: $dark;
+$nav-pills-link-active-color: $light;
+$badge-primary-bg: $primary;
+$badge-secondary-bg: $secondary;
+$badge-success-bg: $success;
+$badge-info-bg: $info;
+$badge-warning-bg: $warning;
+$badge-danger-bg: $danger;
+$badge-light-bg: $light;
+$badge-dark-bg: $dark;
+
+// 3. Include Bootstrap's source files (using use instead of import)
+@use 'bootstrap/scss/bootstrap' with (
+  $theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark
+  )
+);
+
+// 4. Custom component styles (optional)
+.badge {
+  &-primary { background-color: $badge-primary-bg; }
+  &-secondary { background-color: $badge-secondary-bg; }
+  &-success { background-color: $badge-success-bg; }
+  &-info { background-color: $badge-info-bg; }
+  &-warning { background-color: $badge-warning-bg; }
+  &-danger { background-color: $badge-danger-bg; }
+  &-light { background-color: $badge-light-bg; }
+  &-dark { background-color: $badge-dark-bg; }
+}
+
+.nav-pills {
+  .nav-link {
+    &.active {
+      background-color: $nav-pills-link-active-bg;
+      color: $nav-pills-link-active-color;
+    }
+  }
+}

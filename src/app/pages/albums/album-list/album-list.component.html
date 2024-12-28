@@ -1,0 +1,28 @@
+
+
+<app-generic-list [vm]="vm">
+    <div class="shadow p-4 rounded-3 bg-white">
+        <div class="row">
+            @if (!vm.isLoading()) {
+                <div class="col-12 mb-4 d-flex gap-1">
+                    <span class="fw-bold">Album Lists </span>
+                    <span class="fw-light">({{ vm.response().totalItems }})</span>
+                </div>
+                @for (item of vm.response().result; track item.id) {
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                        <app-album-item [album]="item" />
+                    </div>
+                }
+            } @else {
+                <div class="col-12 mb-4 placeholder-glow">
+                    <span class="placeholder col-sm-3 col-md-2"></span>
+                </div>
+                @for (item of [].constructor(10); track $index) {
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                         <app-album-placeholder />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</app-generic-list>

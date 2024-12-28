@@ -1,0 +1,13 @@
+
+@if (!isLoading() && user()) {
+    <div class="d-flex justify-content-center flex-column align-items-center gap-3 py-5 bg-info shadow border border-primary rounded-3">
+        <img [src]="user()?.imageUrl" alt="Avatar" class="avatar-lg">
+        <h6 class="mb-1 fs-3">{{ user()?.fullName }}</h6>
+        <p class="fs-5 gradient-text">{{ user()?.userName }}</p>
+    </div>
+} @else {
+    <div class="placeholder-glow">
+        <div class="placeholder d-flex justify-content-center flex-column align-items-center gap-3 py-5 bg-info shadow border border-primary rounded-3" style="height: 23rem;"></div>
+    </div>
+
+}

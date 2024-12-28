@@ -1,0 +1,58 @@
+
+
+<section class="d-flex w-100 shadow p-4 rounded-3 bg-white mb-3 flex-column">
+    <h5 class="fs-4 my-5">Personal Information</h5>
+
+    <div class="row">
+        <div class="col-sm-12 col-lg-4 mb-5">
+            <span class="text-muted d-block mb-2">NAME</span>
+            @if (!isLoading() && user() !== undefined) {
+                <strong>{{ user()?.fullName }}</strong>
+            }@else {
+                <div class="placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                </div>
+            }
+        </div>
+        <div class="col-sm-12 col-lg-4 mb-5">
+            <span class="text-muted d-block mb-2">EMAIL</span>
+            @if (!isLoading() && user() !== undefined) {
+                <strong>{{ user()?.email }}</strong>
+            }@else {
+                <div class="placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                </div>
+            }
+        </div>
+        <div class="col-sm-12 col-lg-4 mb-5">
+            <span class="text-muted d-block mb-2">PHONE</span>
+            @if (!isLoading() && user() !== undefined) {
+                <strong>{{ user()?.phone }}</strong>
+            }@else {
+                <div class="placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                </div>
+            }
+        </div>
+        <div class="col-sm-12 col-lg-4 mb-5">
+            <span class="text-muted d-block mb-2">WEBSITE</span>
+            @if (!isLoading() && user() !== undefined) {
+                <strong>{{ user()?.website }}</strong>
+            }@else {
+                <div class="placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                </div>
+            }
+        </div>
+        <div class="col-sm-12 col-lg-4 mb-5">
+            <span class="text-muted d-block mb-2">COMPANY</span>
+            @if (!isLoading() && user() !== undefined) {
+                <strong>{{ user()?.company }}</strong>
+            }@else {
+                <div class="placeholder-glow">
+                    <span class="placeholder col-7"></span>
+                </div>
+            }
+        </div>
+    </div>
+</section>

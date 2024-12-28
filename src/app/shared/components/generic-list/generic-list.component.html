@@ -1,0 +1,17 @@
+<section class="d-flex flex-column gap-3 container-fluid">
+    <div class="d-flex w-100 shadow p-4 rounded-3 bg-white">
+        <h5 class="fs-3">{{ vm().pageName }}</h5>
+    </div>
+
+    <div class="d-flex gap-3">
+        <app-filter-list />
+        <app-sort-list [options]="vm().sort" />
+    </div>
+
+    <ng-content></ng-content>
+
+    <app-pagination 
+        [totalItems]="vm().response().totalItems" 
+        [pageNumber]="vm().response().pagination.pageNumber" />
+        
+</section>

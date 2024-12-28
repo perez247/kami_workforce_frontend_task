@@ -1,0 +1,29 @@
+@use 'custom_bootstrap' as custom;
+
+// General color
+* {
+    color: custom.$dark;
+}
+
+// Hover effects
+
+// change border on hover
+.custom-border-hover {
+    transition: border-color 0.3s ease;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-border-hover:hover {
+    border-color: custom.$primary;
+    background-color: rgb(0, 0, 0, 0.04);
+    cursor: pointer;
+  }
+
+// Gradient colors
+
+.gradient-text {
+  background: #D86133;
+  background: linear-gradient(to bottom right, #D86133 40%, #3D03CF 79%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

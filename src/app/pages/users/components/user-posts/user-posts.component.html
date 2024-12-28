@@ -1,0 +1,19 @@
+<section class="d-flex w-100 shadow p-4 rounded-3 bg-white mb-3 flex-column">
+    <h5 class="fs-4 my-5">Posts</h5>
+
+    <div class="row">
+        @if (!isLoading()) {
+            @for (item of posts(); track item.id) {
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    <app-post-item [post]="item" />
+                </div>
+            }
+        } @else {
+            @for (item of [].constructor(10); track $index) {
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                     <app-post-placeholder />
+                </div>
+            }
+        }
+    </div>
+</section>

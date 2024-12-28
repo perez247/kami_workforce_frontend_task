@@ -1,0 +1,62 @@
+
+@if (totalPages() > 1) {
+    <nav aria-label="Page navigation shadow p-4">
+        <ul class="pagination">
+            <!-- Previous button -->
+            <li class="page-item" [class.disabled]="pageNumber() === 1">
+                <button class="page-link" 
+                        (click)="onPageChange(pageNumber() - 1)"
+                        [disabled]="pageNumber() === 1">
+                    Previous
+                </button>
+            </li>
+    
+            <!-- First page -->
+            <li class="page-item" [class.active]="pageNumber() === 1">
+                <button class="page-link" (click)="onPageChange(1)">1</button>
+            </li>
+    
+            <!-- Left ellipsis -->
+             @if (showLeftEllipsis()) {
+                 <li class="page-item disabled">
+                     <span class="page-link">...</span>
+                 </li>
+             }
+    
+            <!-- Middle pages -->
+             @for (page of visiblePages(); track $index) {
+                <li class="page-item" [class.active]="pageNumber() === page">
+                    <button class="page-link" (click)="onPageChange(page)">
+                        {{page}}
+                    </button>
+                </li>
+             }
+    
+            <!-- Right ellipsis -->
+             @if (showRightEllipsis()) {
+                 <li class="page-item disabled">
+                     <span class="page-link">...</span>
+                 </li>
+             }
+    
+            <!-- Last page -->
+             @if (totalPages() > 1) {
+                 <li class="page-item" 
+                     [class.active]="pageNumber() === totalPages()">
+                     <button class="page-link" (click)="onPageChange(totalPages())">
+                         {{totalPages()}}
+                     </button>
+                 </li>
+             }
+    
+            <!-- Next button -->
+            <li class="page-item" [class.disabled]="pageNumber() === totalPages()">
+                <button class="page-link" 
+                        (click)="onPageChange(pageNumber() + 1)"
+                        [disabled]="pageNumber() === totalPages()">
+                    Next
+                </button>
+            </li>
+        </ul>
+    </nav>
+}

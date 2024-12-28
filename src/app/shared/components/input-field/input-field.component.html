@@ -1,0 +1,21 @@
+
+@switch (inputType()) {
+    @case (inputTypesEnum.Text) {
+        <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="textInput"
+            [placeholder]="placeholder()">
+    }
+
+    @case (inputTypesEnum.Dropdown) {
+        <select class="form-select" style="min-width: 5rem;" [(ngModel)]="dropdownInput">
+            <option selected>{{placeholder()}}</option>
+            @for (option of options(); track $index) {
+                <option [value]="option.value">{{option.label}}</option>
+            }
+        </select>
+    }
+
+}
+
