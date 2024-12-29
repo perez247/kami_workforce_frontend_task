@@ -1,8 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal } from '@angular/core';
 import { SidebarComponent } from "./shared/components/sidebar/sidebar.component";
 import { CommonModule } from '@angular/common';
-import { SidebarService } from './core/services/sidebar/sidebar.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +9,10 @@ import { SidebarService } from './core/services/sidebar/sidebar.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  sidebarService = inject(SidebarService);
-
-  ngOnInit(): void {
-    if (this.sidebarService.isDesktop()) {
-      this.sidebarService.isOpen.set(true);
-    }
-  }
-
-  toggleSidebar(event: MouseEvent) {
-    event.stopPropagation();
-    this.sidebarService.toggle();
-  }
-
-  onOutsideClick() {
-    if (window.innerWidth <= 992) {
-      this.sidebarService.close();
-    }
+export class AppComponent {
+  sidebarState = signal(false);
+  
+  toggleSidebar(state: boolean) {
+    this.sidebarState.set(state);
   }
 }

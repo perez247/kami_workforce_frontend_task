@@ -1,10 +1,13 @@
-
+<!-- 
 
 
   <div class="wrapper vh-100" tabindex="-1" (click)="onOutsideClick()" (keyup.enter)="onOutsideClick()" (keyup.space)="onOutsideClick()">
     <div class="d-flex position-relative">
-      <!-- Sidebar -->
-      <app-sidebar [ngClass]="{'d-none': !sidebarService.isOpen() && sidebarService.isDesktop()}"></app-sidebar>
+      <app-sidebar 
+        [ngClass]="{
+          'is-open': sidebarService.isOpen(),
+          'is-closed': !sidebarService.isOpen()
+          }"></app-sidebar>
 
       <button 
         class="btn btn-primary position-fixed" style="right: 30px; top: 10px; z-index: 100;" 
@@ -14,7 +17,40 @@
       <i class="bi bi-list fs-4 fw-bold"></i>
       </button>
 
-      <!-- Page Content -->
+      <div class="flex-grow-1 container-fluid p-3 bg-secondary vh-100 overflow-auto pt-5">
+        <router-outlet />
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="vh-100 position-relative">
+    <button 
+      class="btn btn-primary position-fixed" style="right: 30px; top: 10px; z-index: 100;" 
+      type="button" 
+      (click)="toggleSidebar()"
+    >
+    <i class="bi bi-list fs-4 fw-bold"></i>
+    </button>
+
+    <app-sidebar #sidebar></app-sidebar>
+    <div class="main-content">
+      <div class="flex-grow-1 container-fluid p-3 bg-secondary vh-100 overflow-auto pt-5">
+        <router-outlet />
+      </div>
+    </div>
+  </div> -->
+
+  <div class="vh-100">
+    <!-- <button 
+      class="btn btn-primary position-fixed" style="right: 30px; top: 10px; z-index: 100;" 
+      type="button" 
+      (click)="toggleSidebar()"
+    >
+    <i class="bi bi-list fs-4 fw-bold"></i>
+    </button> -->
+
+    <app-sidebar (toggleSideBar)="toggleSidebar($event)"></app-sidebar>
+    <div class="content" [class.sidebar-open]="sidebarState()">
       <div class="flex-grow-1 container-fluid p-3 bg-secondary vh-100 overflow-auto pt-5">
         <router-outlet />
       </div>
