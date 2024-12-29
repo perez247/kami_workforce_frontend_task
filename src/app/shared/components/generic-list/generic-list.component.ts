@@ -14,8 +14,8 @@ import { PaginationComponent } from "../pagination/pagination.component";
   templateUrl: './generic-list.component.html',
   styleUrl: './generic-list.component.scss'
 })
-export class GenericListComponent extends CleanUpHandler implements OnInit {
-  vm = input.required<IListViewModel>();
+export class GenericListComponent<T> extends CleanUpHandler implements OnInit {
+  vm = input.required<IListViewModel<T>>();
 
   constructor(private route: ActivatedRoute) {
     super();
@@ -40,7 +40,7 @@ export class GenericListComponent extends CleanUpHandler implements OnInit {
   }
 
   //TODO: the use of any should be fixed here
-  filter(sort: any, search: string, pageNumber: number) {
+  filter(sort: keyof T, search: string, pageNumber: number) {
     this.vm().filter.set(new ApplicationRequest(search, sort, { pageNumber, pageSize: 10 }))
   }
 }

@@ -5,9 +5,9 @@ import { ApplicationResponse } from "../models/response.model";
 
 //TODO: A lot of any was used here
 // Review later and fix
-export interface IListViewModel {
+export interface IListViewModel<T> {
     pageName: string;
-    filter: WritableSignal<ApplicationRequest<any>>
+    filter: WritableSignal<ApplicationRequest<T>>
     sort: LookupModel<string>[]
-    readonly response: WritableSignal<ApplicationResponse<any>>
+    readonly response: WritableSignal<ApplicationResponse<T[]>>
 }

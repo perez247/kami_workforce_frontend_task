@@ -8,7 +8,7 @@ import { IListViewModel } from "../interfaces/i-listview.model";
 import { BaseService } from "../services/base/base.service";
 
 @Injectable()
-export abstract class BaseViewModel<T> extends CleanUpHandler implements IListViewModel {
+export abstract class BaseViewModel<T> extends CleanUpHandler implements IListViewModel<T> {
     abstract pageName: string;
 
     protected abstract service: BaseService<T>;
