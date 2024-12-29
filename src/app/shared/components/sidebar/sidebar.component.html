@@ -70,11 +70,15 @@ id="sidebar" class="d-flex flex-column p-3 bg-light vh-100 shadow bg-white" styl
 <div class="sidebar d-flex flex-column p-3 bg-light vh-100 shadow bg-white" [class.show]="isOpen()">
   
   <button 
-    class="btn btn-primary position-fixed" style="right: -70px; top: 10px; z-index: 100;" 
+    class="btn btn-primary position-fixed toggle-btn" style="right: -70px; top: 10px; z-index: 100;" 
     type="button" 
     (click)="toggle()"
     >
-    <i class="bi bi-list fs-4 fw-bold"></i>
+    <i
+      class="fs-4"
+      [class]="isOpen() ? 'bi bi-x-lg' : 'bi bi-list'"
+      [class.open]="isOpen()"
+    ></i>
   </button>
   
   <div>

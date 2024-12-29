@@ -46,3 +46,21 @@ host {
     display: none;
   }
 }
+
+// Hamburger icon animation
+.toggle-btn {
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.bi {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.bi.open {
+  transform: rotate(90deg);
+}
