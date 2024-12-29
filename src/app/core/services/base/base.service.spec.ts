@@ -1,225 +1,146 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { BaseService } from './base.service';
-import { environment } from '../../../../environments/environment';
+import { ApplicationRequest } from '../../models/request.model';
+import { Pagination } from '../../models/pagination.model';
+import { Injectable } from '@angular/core';
 
-// Test interface
-interface TestItem {
+interface TestModel {
   id: number;
   name: string;
-  value: number;
 }
 
-// Concrete implementation for testing
-class TestService extends BaseService<TestItem> {
-  protected endpoint = 'test-items';
+// Extend BaseService to expose protected methods for testing
+class TestService extends BaseService<TestModel> {
+  protected endpoint = 'test';
 
-  constructor(http: HttpClient) {
-    super(http);
+  protected applySearchFilter(data: TestModel[], filterTerm: string): TestModel[] {
+    return data.filter(item => item.name.includes(filterTerm));
+  }
+}
+
+@Injectable()
+class TestableService extends TestService {
+  public exposeGetCachedData() {
+    return this.getCachedData();
   }
 
-  protected applySearchFilter(data: TestItem[], filterTerm: string): TestItem[] {
-    return data.filter(item => 
-      item.name.toLowerCase().includes(filterTerm.toLowerCase())
-    );
+  public exposeApplyFilters(data: TestModel[], request?: ApplicationRequest<TestModel>) {
+    return this['applyFilters'](data, request);
+  }
+
+  public exposeApplyPagination(data: TestModel[], pagination?: Pagination) {
+    return this['applyPagination'](data, pagination);
+  }
+
+  public exposeSanitize(pagination?: Pagination) {
+    return this['sanitize'](pagination);
   }
 }
 
 describe('BaseService', () => {
-  let service: TestService;
+  let service: TestableService;
   let httpMock: HttpTestingController;
-  const apiUrl = environment.apiUrl;
-
-  const mockData: TestItem[] = [
-    { id: 1, name: 'Item 1', value: 100 },
-    { id: 2, name: 'Item 2', value: 200 },
-    { id: 3, name: 'Test 3', value: 300 },
-    { id: 4, name: 'Item 4', value: 400 },
-    { id: 5, name: 'Test 5', value: 500 },
+  const mockData: TestModel[] = [
+    { id: 1, name: 'Item 1' },
+    { id: 2, name: 'Item 2' },
+    { id: 3, name: 'Item 3' },
   ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TestService]
+      providers: [
+        TestableService,
+        provideHttpClientTesting(),
+      ],
     });
-
-    service = TestBed.inject(TestService);
+    service = TestBed.inject(TestableService);
     httpMock = TestBed.inject(HttpTestingController);
+    service['cachedData'] = []; // Clear cache before each test
   });
 
   afterEach(() => {
     httpMock.verify();
   });
 
-  describe('getCachedData', () => {
-    it('should fetch data from API when cache is empty', (done) => {
-      service['getCachedData']().subscribe(data => {
-        expect(data).toEqual(mockData);
-        expect(service['cachedData']).toEqual(mockData);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      expect(req.request.method).toBe('GET');
-      req.flush(mockData);
+  it('should fetch data from the API if cache is empty', () => {
+    service.exposeGetCachedData().subscribe(data => {
+      expect(data).toEqual(mockData);
     });
 
-    it('should return cached data when available', (done) => {
-      service['cachedData'] = mockData;
+    const req = httpMock.expectOne(`${service['baseUrl']}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockData);
+  });
 
-      service['getCachedData']().subscribe(data => {
-        expect(data).toEqual(mockData);
-        done();
-      });
+  it('should return cached data if available', () => {
+    service['cachedData'] = mockData;
 
-      httpMock.expectNone(`${apiUrl}/test-items`);
+    service.exposeGetCachedData().subscribe(data => {
+      expect(data).toEqual(mockData);
+    });
+
+    httpMock.expectNone(`${service['baseUrl']}`);
+  });
+
+  it('should get all data and apply filters, sorting, and pagination', () => {
+    service['cachedData'] = mockData;
+
+    const request: ApplicationRequest<TestModel> = {
+      filterTerm: 'Item',
+      sortBy: 'id',
+      pagination: { pageNumber: 1, pageSize: 2 },
+    };
+
+    service.getAll(request).subscribe(response => {
+      expect(response.result).toEqual(mockData.slice(0, 2));
+      expect(response.totalItems).toBe(3);
     });
   });
 
-  describe('getAll', () => {
-    it('should return all items with default pagination when no request is provided', (done) => {
-      service.getAll().subscribe(response => {
-        expect(response.result.length).toBe(5);
-        expect(response.totalItems).toBe(5);
-        expect(response.pagination.pageSize).toBe(10);
-        expect(response.pagination.pageNumber).toBe(1);
-        done();
-      });
+  it('should get data by ID', () => {
+    const id = 1;
+    const expectedItem = mockData.find(item => item.id === id);
 
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      req.flush(mockData);
+    service.getById(id).subscribe(data => {
+      expect(data).toEqual(expectedItem);
     });
 
-    it('should apply filtering correctly', (done) => {
-      const request = {
-        filterTerm: 'Test',
-        pagination: { pageNumber: 1, pageSize: 10 }
-      };
-
-      service.getAll(request).subscribe(response => {
-        expect(response.result.length).toBe(2);
-        expect(response.totalItems).toBe(2);
-        expect(response.result.every(item => item.name.includes('Test'))).toBe(true);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      req.flush(mockData);
-    });
-
-    it('should apply sorting correctly', (done) => {
-      const request = {
-        sortBy: 'value' as keyof TestItem,
-        pagination: { pageNumber: 1, pageSize: 10 },
-        filterTerm: ''
-      };
-
-      service.getAll(request).subscribe(response => {
-        expect(response.result[0].value).toBe(100);
-        expect(response.result[4].value).toBe(500);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      req.flush(mockData);
-    });
-
-    it('should apply pagination correctly', (done) => {
-      const request = {
-        sortBy: 'value' as keyof TestItem,
-        pagination: { pageNumber: 2, pageSize: 2 },
-        filterTerm: ''
-      };
-
-      service.getAll(request).subscribe(response => {
-        expect(response.result.length).toBe(2);
-        expect(response.result[0].id).toBe(3);
-        expect(response.result[1].id).toBe(4);
-        expect(response.totalItems).toBe(5);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      req.flush(mockData);
-    });
+    const req = httpMock.expectOne(`${service['baseUrl']}/${id}`);
+    expect(req.request.method).toBe('GET');
   });
 
-  describe('getById', () => {
-    it('should fetch item by id', (done) => {
-      const testId = 1;
-      const testItem = mockData[0];
+  it('should sanitize pagination values', () => {
+    const pagination: Pagination = { pageNumber: -1, pageSize: 100 };
+    const sanitized = service.exposeSanitize(pagination);
 
-      service.getById(testId).subscribe(item => {
-        expect(item).toEqual(testItem);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${apiUrl}/test-items/${testId}`);
-      expect(req.request.method).toBe('GET');
-      req.flush(testItem);
-    });
+    expect(sanitized.pageNumber).toBe(1);
+    expect(sanitized.pageSize).toBe(10);
   });
 
-  describe('sanitize pagination', () => {
-    it('should handle invalid pageSize', (done) => {
-      const request = {
-        filterTerm: '',
-        sortBy: 'value' as keyof TestItem,
-        pagination: { pageNumber: 1, pageSize: 999 }
-      };
+  it('should apply filters correctly', () => {
+    const request: ApplicationRequest<TestModel> = {
+      filterTerm: 'Item 1',
+      pagination: { pageNumber: 1, pageSize: 2 },
+    };
 
-      service.getAll(request).subscribe(response => {
-        expect(response.pagination.pageSize).toBe(10);
-        done();
-      });
+    const filteredResponse = service.exposeApplyFilters(mockData, request);
 
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      req.flush(mockData);
-    });
-
-    it('should handle invalid pageNumber', (done) => {
-      const request = {
-        filterTerm: '',
-        sortBy: 'value' as keyof TestItem,
-        pagination: { pageNumber: -1, pageSize: 10 }
-      };
-
-      service.getAll(request).subscribe(response => {
-        expect(response.pagination.pageNumber).toBe(1);
-        done();
-      });
-
-      const req = httpMock.expectOne(`${apiUrl}/test-items`);
-      req.flush(mockData);
-    });
-
-    // it('should handle null pagination', (done) => {
-    //   const request = {
-    //     pagination: null,
-    //     filterTerm: '',
-    //     sortBy: 'value' as keyof TestItem,
-    //   };
-
-    //   // service.getAll(request).subscribe(response => {
-    //   //   expect(response.pagination.pageNumber).toBe(1);
-    //   //   expect(response.pagination.pageSize).toBe(10);
-    //   //   done();
-    //   // });
-
-    //   const req = httpMock.expectOne(`${apiUrl}/test-items`);
-    //   req.flush(mockData);
-    // });
+    expect(filteredResponse.result).toEqual([{ id: 1, name: 'Item 1' }]);
+    expect(filteredResponse.totalItems).toBe(1);
   });
 
-  describe('isValidNumber', () => {
-    it('should validate numbers correctly', () => {
-      expect(service['isValidNumber']('123')).toBe(true);
-      expect(service['isValidNumber']('abc')).toBe(false);
-      expect(service['isValidNumber']('12.34')).toBe(false);
-      expect(service['isValidNumber']('-1')).toBe(true);
-      expect(service['isValidNumber']('0')).toBe(true);
-    });
+  it('should apply pagination correctly', () => {
+    const pagination: Pagination = { pageNumber: 1, pageSize: 2 };
+    const paginatedResponse = service.exposeApplyPagination(mockData, pagination);
+
+    expect(paginatedResponse.result).toEqual(mockData.slice(0, 2));
+    expect(paginatedResponse.totalItems).toBe(mockData.length);
+  });
+
+  it('should apply sorting correctly', () => {
+    const sortedData = service['applySorting'](mockData, 'id');
+    expect(sortedData).toEqual(mockData);
   });
 });

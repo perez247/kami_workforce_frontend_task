@@ -8,7 +8,11 @@ export class TrimSentencePipe implements PipeTransform {
   transform(value: string, ...args: number[]): string {
     if (!value) { return ''; }
 
-    const length = args[0] ?? 20;
+    const dirtyLength = args[0];
+    const length = 
+      dirtyLength && 
+      !isNaN(Number(dirtyLength)) && 
+      dirtyLength >= 0 ? dirtyLength : 20;
 
     if (value.length <= length) { return value; }
 

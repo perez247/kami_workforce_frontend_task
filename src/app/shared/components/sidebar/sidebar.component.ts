@@ -35,16 +35,11 @@ export class SidebarComponent extends CleanUpHandler implements OnInit {
     );
   }
 
-  closeOnOverlay() {
+  closeOnOverlayOrSmallScreens() {
     if (this.breakpointObserver.isMatched([Breakpoints.Small, Breakpoints.XSmall])) {
       this.isOpen.set(false);
       this.toggleSideBar.emit(false);
     }
-  }
-
-  closeSideBar(): void {
-    this.isOpen.set(false);
-    this.toggleSideBar.emit(false);
   }
 
   toggle(): void {
